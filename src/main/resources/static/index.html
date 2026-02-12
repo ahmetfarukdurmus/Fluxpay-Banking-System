@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FluxPay | Global Fintech Solution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --primary: #4361ee; --secondary: #3f37c9; --success: #10b981; --bg: #f4f7fe; --text: #2b2d42; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding-top: 50px; }
+        .main-wrapper { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 450px; padding: 20px; }
+        .container { background: white; padding: 35px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: 1px solid #fff; }
+        .logo { text-align: center; margin-bottom: 25px; font-size: 26px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #718096; }
+        input { width: 100%; padding: 12px 16px; border: 2px solid #edf2f7; border-radius: 12px; font-size: 15px; transition: all 0.3s; box-sizing: border-box; background: #f8fafc; }
+        input:focus { border-color: var(--primary); outline: none; background: white; box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1); }
+        button { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        #response { margin-top: 20px; padding: 12px; border-radius: 10px; text-align: center; font-size: 14px; display: none; font-weight: 600; }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
+        .history-card { background: white; padding: 25px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); }
+        .history-header { font-weight: 700; font-size: 16px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-size: 12px; color: #a0aec0; text-transform: uppercase; padding-bottom: 10px; }
+        td { padding: 12px 0; border-bottom: 1px solid #f7fafc; font-size: 14px; }
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; background: #e6fffa; color: #234e52; }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <div class="container">
+        <div class="logo"><i class="fas fa-shield-halved"></i> FluxPay</div>
+
+        <div class="input-group">
+            <label>GÖNDEREN HESAP</label>
+            <input type="number" id="from" placeholder="Hesap ID giriniz">
+        </div>
+
+        <div class="input-group">
+            <label>ALICI HESAP</label>
+            <input type="number" id="to" placeholder="Hesap ID giriniz">
+        </div>
+
+        <div style="display: flex; gap: 15px;">
+            <div class="input-group" style="flex: 2;">
+                <label>MİKTAR (₺)</label>
+                <input type="number" id="amount" placeholder="0.00">
+            </div>
+            <div class="input-group" style="flex: 1;">
+                <label>PIN</label>
+                <input type="password" id="pin" placeholder="••••">
+            </div>
+        </div>
+
+        <button onclick="sendMoney()">
+            <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Transferi Onayla
+        </button>
+
+        <div id="response"></div>
+    </div>
+
+    <div class="history-card">
+        <div class="history-header">
+            <span>Son İşlemler</span>
+            <i class="fas fa-history" style="color: #a0aec0;"></i>
+        </div>
+        <div id="historyList">
+            <p style="font-size: 12px; color: #a0aec0; text-align: center;">Henüz işlem bulunamadı.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadHistory() {
+        try {
+            const response = await fetch('http://localhost:8080/api/accounts/transactions');
+            const data = await response.json();
+            const historyDiv = document.getElementById('historyList');
+
+            if(data.length === 0) return;
+
+            let html = '<table><tr><th>HESAP</th><th>MİKTAR</th><th>DURUM</th></tr>';
+            data.reverse().slice(0, 5).forEach(t => {
+                html += `
+                    <tr>
+                        <td>${t.senderId} → ${t.receiverId}</td>
+                        <td style="font-weight:700;">${t.amount} ₺</td>
+                        <td><span class="badge">BAŞARILI</span></td>
+                    </tr>`;
+            });
+            historyDiv.innerHTML = html + '</table>';
+        } catch (err) {
+            console.error("Geçmiş yüklenemedi");
+        }
+    }
+
+    async function sendMoney() {
+        const from = document.getElementById('from').value;
+        const to = document.getElementById('to').value;
+        const amount = document.getElementById('amount').value;
+        const pin = document.getElementById('pin').value;
+        const respDiv = document.getElementById('response');
+
+        respDiv.style.display = 'block';
+        respDiv.innerText = "İşlem doğrulanıyor...";
+        respDiv.className = "";
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/accounts/transfer?from=${from}&to=${to}&amount=${amount}&pin=${pin}`, {
+                method: 'POST'
+            });
+
+            const message = await response.text();
+            respDiv.innerText = message;
+
+            if (response.ok) {
+                respDiv.className = "success";
+                loadHistory();
+            } else {
+                respDiv.className = "error";
+            }
+        } catch (err) {
+            respDiv.innerText = "Bağlantı hatası!";
+            respDiv.className = "error";
+        }
+    }
+
+    window.onload = loadHistory;
+</script>
+
+</body>
+</html>
