@@ -3,133 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FluxPay | Global Fintech Solution</title>
+    <title>FluxPay | Digital Banking Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --primary: #4361ee; --secondary: #3f37c9; --success: #10b981; --bg: #f4f7fe; --text: #2b2d42; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding-top: 50px; }
-        .main-wrapper { display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 450px; padding: 20px; }
-        .container { background: white; padding: 35px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: 1px solid #fff; }
-        .logo { text-align: center; margin-bottom: 25px; font-size: 26px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #718096; }
-        input { width: 100%; padding: 12px 16px; border: 2px solid #edf2f7; border-radius: 12px; font-size: 15px; transition: all 0.3s; box-sizing: border-box; background: #f8fafc; }
-        input:focus { border-color: var(--primary); outline: none; background: white; box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1); }
-        button { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
-        button:hover { opacity: 0.9; transform: translateY(-1px); }
-        #response { margin-top: 20px; padding: 12px; border-radius: 10px; text-align: center; font-size: 14px; display: none; font-weight: 600; }
-        .success { background: #d1fae5; color: #065f46; }
-        .error { background: #fee2e2; color: #991b1b; }
-        .history-card { background: white; padding: 25px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); }
-        .history-header { font-weight: 700; font-size: 16px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; font-size: 12px; color: #a0aec0; text-transform: uppercase; padding-bottom: 10px; }
-        td { padding: 12px 0; border-bottom: 1px solid #f7fafc; font-size: 14px; }
-        .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; background: #e6fffa; color: #234e52; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .fluxpay-gradient { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
     </style>
 </head>
-<body>
-
-<div class="main-wrapper">
-    <div class="container">
-        <div class="logo"><i class="fas fa-shield-halved"></i> FluxPay</div>
-
-        <div class="input-group">
-            <label>GÖNDEREN HESAP</label>
-            <input type="number" id="from" placeholder="Hesap ID giriniz">
+<body class="p-4 md:p-8">
+<div class="max-w-5xl mx-auto">
+    <header class="flex justify-between items-center mb-10">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-blue-500">FLUX<span class="text-white">PAY</span></h1>
+            <p class="text-slate-400 text-sm">Güvenli Dijital Finans <span class="text-blue-400 font-semibold">FluxPay Engine</span></p>
         </div>
-
-        <div class="input-group">
-            <label>ALICI HESAP</label>
-            <input type="number" id="to" placeholder="Hesap ID giriniz">
-        </div>
-
-        <div style="display: flex; gap: 15px;">
-            <div class="input-group" style="flex: 2;">
-                <label>MİKTAR (₺)</label>
-                <input type="number" id="amount" placeholder="0.00">
-            </div>
-            <div class="input-group" style="flex: 1;">
-                <label>PIN</label>
-                <input type="password" id="pin" placeholder="••••">
+        <div class="flex items-center gap-4">
+            <span class="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full text-xs font-medium border border-blue-500/20 underline decoration-blue-500/50">FluxPay Core v1.0</span>
+            <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-blue-400">
+                <i class="fas fa-shield-halved"></i>
             </div>
         </div>
+    </header>
 
-        <button onclick="sendMoney()">
-            <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Transferi Onayla
-        </button>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-1 space-y-6">
+            <div class="glass p-6 rounded-3xl shadow-xl overflow-hidden relative border-t-4 border-t-blue-500">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl text-blue-400"><i class="fas fa-bolt"></i></div>
+                <h3 class="text-slate-400 text-sm font-medium mb-1">FluxPay Kullanılabilir Bakiye</h3>
+                <div class="text-4xl font-bold mb-4">₺24.500,00</div>
+                <button class="w-full fluxpay-gradient py-3 rounded-xl font-semibold shadow-lg shadow-blue-500/30 hover:brightness-110 transition">
+                    Bakiye Yükle
+                </button>
+            </div>
 
-        <div id="response"></div>
+            <div class="glass p-6 rounded-3xl">
+                <h3 class="text-slate-200 font-semibold mb-4 flex items-center gap-2">
+                    <i class="fas fa-paper-plane text-blue-400"></i> FluxPay Transfer
+                </h3>
+                <div class="space-y-4">
+                    <input type="text" placeholder="Alıcı FluxPay No" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 transition-all">
+                    <input type="number" placeholder="Miktar (₺)" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 transition-all">
+                    <button class="w-full bg-blue-600/20 text-blue-400 border border-blue-500/30 hover:bg-blue-600/30 py-3 rounded-xl font-medium transition text-sm">
+                        Hızlı Gönder
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="md:col-span-2">
+            <div class="glass p-6 rounded-3xl h-full">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-semibold text-white">İşlem Geçmişi</h3>
+                    <a href="#" class="text-blue-400 text-sm hover:underline">Tüm Kayıtlar</a>
+                </div>
+                <div class="space-y-4" id="transactionList">
+                    <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/40 border border-slate-700/50">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
+                                <i class="fas fa-arrow-right-from-bracket"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-white">Market Harcaması</p>
+                                <p class="text-xs text-slate-500">12 Şubat 2026 • 14:20</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-red-400">- ₺350,00</p>
+                            <p class="text-[10px] text-blue-500/70 font-mono tracking-widest uppercase">FluxPay Network</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/40 border border-slate-700/50">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400">
+                                <i class="fas fa-arrow-left-long"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-white">Para İadesi</p>
+                                <p class="text-xs text-slate-500">10 Şubat 2026 • 09:00</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-green-400">+ ₺1.200,00</p>
+                            <p class="text-[10px] text-blue-400 font-bold italic">FluxPay Verified</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="history-card">
-        <div class="history-header">
-            <span>Son İşlemler</span>
-            <i class="fas fa-history" style="color: #a0aec0;"></i>
+    <footer class="mt-12 text-center text-slate-500 text-sm">
+        <p>&copy; 2026 <strong>FluxPay</strong> Global Fintech Solutions. Tüm hakları saklıdır.</p>
+        <div class="mt-2 flex justify-center gap-4">
+            <a href="/swagger-ui/index.html" class="hover:text-blue-400 transition-colors"><i class="fas fa-code mr-1"></i> Developer Portal</a>
+            <a href="#" class="hover:text-blue-400 transition-colors"><i class="fas fa-shield-alt mr-1"></i> Güvenlik</a>
         </div>
-        <div id="historyList">
-            <p style="font-size: 12px; color: #a0aec0; text-align: center;">Henüz işlem bulunamadı.</p>
-        </div>
-    </div>
+    </footer>
 </div>
-
-<script>
-    async function loadHistory() {
-        try {
-            const response = await fetch('http://localhost:8080/api/accounts/transactions');
-            const data = await response.json();
-            const historyDiv = document.getElementById('historyList');
-
-            if(data.length === 0) return;
-
-            let html = '<table><tr><th>HESAP</th><th>MİKTAR</th><th>DURUM</th></tr>';
-            data.reverse().slice(0, 5).forEach(t => {
-                html += `
-                    <tr>
-                        <td>${t.senderId} → ${t.receiverId}</td>
-                        <td style="font-weight:700;">${t.amount} ₺</td>
-                        <td><span class="badge">BAŞARILI</span></td>
-                    </tr>`;
-            });
-            historyDiv.innerHTML = html + '</table>';
-        } catch (err) {
-            console.error("Geçmiş yüklenemedi");
-        }
-    }
-
-    async function sendMoney() {
-        const from = document.getElementById('from').value;
-        const to = document.getElementById('to').value;
-        const amount = document.getElementById('amount').value;
-        const pin = document.getElementById('pin').value;
-        const respDiv = document.getElementById('response');
-
-        respDiv.style.display = 'block';
-        respDiv.innerText = "İşlem doğrulanıyor...";
-        respDiv.className = "";
-
-        try {
-            const response = await fetch(`http://localhost:8080/api/accounts/transfer?from=${from}&to=${to}&amount=${amount}&pin=${pin}`, {
-                method: 'POST'
-            });
-
-            const message = await response.text();
-            respDiv.innerText = message;
-
-            if (response.ok) {
-                respDiv.className = "success";
-                loadHistory();
-            } else {
-                respDiv.className = "error";
-            }
-        } catch (err) {
-            respDiv.innerText = "Bağlantı hatası!";
-            respDiv.className = "error";
-        }
-    }
-
-    window.onload = loadHistory;
-</script>
-
 </body>
 </html>
